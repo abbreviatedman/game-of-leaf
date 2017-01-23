@@ -19,7 +19,7 @@ type alias Model = {
 
 model : Model
 model =
-  Model Array.initialize 64 { y = (identity / 8), x = (rem identity 8), cellStatus = False}
+  Model (Array.initialize 64 (\index -> { y = ((identity (index / 1)) / 8), x = (rem (identity (index / 1) 8)), cellStatus = False}))
 
 
 -- UPDATE
