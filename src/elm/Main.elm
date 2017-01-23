@@ -9,69 +9,39 @@ main =
   Html.beginnerProgram { model = model, view = view, update = update }
 
 
-
-
-
-one : Bool
-one = False
-two : Bool
-two = True
-three : Bool
-three = False
-four : Bool
-four = True
-five : Bool
-five = False
-six : Bool
-six = True
-seven : Bool
-seven = False
-eight : Bool
-eight = True
-nine : Bool
-nine = False
-
-pointsList : Array Bool
-pointsList = Array.fromList [one, two, three, four, five, six, seven, eight, nine]
-
+type alias Point = {
+  y : Int, x : Int, cellStatus : Bool
+}
 
 type alias Model = {
-  points : Array Bool
+  points: Array Point
 }
 
 model : Model
 model =
-  Model pointsList
-
+  Model Array.initialize 64 { y = (identity / 8), x = (rem identity 8), cellStatus = False}
 
 
 -- UPDATE
-type Msg = Step | NoOp
+type Msg = NoOp | ToggleCell
 
 update : Msg -> Model -> Model
 update msg model =
   case msg of
-    Step -> log "Model" (evaluateGrid model model 8)
     NoOp -> model
+ {--   ToggleCell rowIndex cellIndex cellStatus ->
+      {model | points = (Array.set rowIndex (Array.set cellIndex (not cellStatus) (Array.get rowIndex model.points)) model.points)}
+    Step ->
+      Array.indexedMap updateRow model.points
+
+updateRow : Int -> Array Bool -> Array Bool
+updateRow rowIndex row =
 
 
-evaluateGrid : Model -> Model -> Int -> Model
-evaluateGrid oldModel newModel gridPosition =
-  if gridPosition < 1 then
-    newModel
-  else if gridPosition == 8 then
-    evaluateGrid oldModel newModel (gridPosition - 1)
-  else
-    let
-      cellStatus = Array.get gridPosition oldModel.points
-      tooManySimilarNeighbors = (Array.get (gridPosition - 1) oldModel.points == Array.get (gridPosition + 1) oldModel.points)
-    in
-      case tooManySimilarNeighbors of
-        True ->
-          evaluateGrid oldModel {newModel | points = (Array.set gridPosition (cellStatus == Just False) newModel.points)} (gridPosition - 1)
-        False ->
-          evaluateGrid oldModel newModel (gridPosition - 1)
+updateCell : Int -> Bool -> Bool
+updateCell cellIndex cellStatus =
 
+  --}
 
 
 
@@ -82,32 +52,53 @@ view : Model -> Html Msg
 view model =
   div [style styles.div]
     [table [style styles.board]
-      [
-        tr []
-          [ td [style (chooseColor (Array.get 0 model.points))] [text " "]
-          , td [style (chooseColor (Array.get 1 model.points))] [text " "]
-          , td [style (chooseColor (Array.get 2 model.points))] [text " "]
-          ],
-        tr []
-          [ td [style (chooseColor (Array.get 3 model.points))] [text " "]
-          , td [style (chooseColor (Array.get 4 model.points))] [text " "]
-          , td [style (chooseColor (Array.get 5 model.points))] [text " "]
-          ],
-        tr []
-          [ td [style (chooseColor (Array.get 6 model.points))] [text " "]
-          , td [style (chooseColor (Array.get 7 model.points))] [text " "]
-          , td [style (chooseColor (Array.get 8 model.points))] [text " "]
-          ]
-      ],
-    button [class "btn btn-success", style styles.controlPanel, onClick Step] [span [] [text "Step"]]
+      (Array.toList (Array.indexedMap (renderRow) (Array.filter isFirstInRow model.points))),
+    button [class "btn btn-success", style styles.controlPanel] [span [] [text "Step"]]
     ]
 
-chooseColor : Maybe Bool -> List (String, String)
-chooseColor cellStatus =
-  if cellStatus == Just True then -- could be we could get rid of Just
-    styles.tdAlive
+{--
+
+renderRow : Int -> Bool -> Html Msg
+renderRow rowIndex row =
+  tr [] (Array.toList (Array.indexedMap renderCell row))
+
+renderCell : Int -> Point -> Html Msg
+renderCell cellIndex cell =
+  let
+    firstsInEachRow = Array.filter isFirstInRow model.points
+  in
+    Array.indexedMap renderRow firstsInEachRow
+
+
+
+
+  td [style chooseColor cellStatus] [text " "]
+ next step is to add button
+ next after that: button onClick toggle
+
+ button [onClick ToggleCell rowIndex cellIndex cellStatus] [text " "]
+
+ --}
+
+isFirstInRow : Point -> Bool
+isFirstInRow point =
+  point.x == 0
+
+
+renderRow : Int -> Point -> Html Msg
+renderRow rowIndex firstsInEachRow =
+  let
+    rowArray = (Array.filter (\point -> point.y == rowIndex) model.points)
+  in
+    tr [] (Array.toList (Array.map chooseColor rowArray))
+
+
+chooseColor : Point -> Html Msg
+chooseColor point =
+  if point.cellStatus == True then
+    td [style styles.tdAlive] [text " "]
   else
-    styles.tdDead
+    td [style styles.tdDead] [text " "]
 
 
 
