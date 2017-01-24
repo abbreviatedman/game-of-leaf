@@ -8,9 +8,8 @@ main : Program Never Model Msg
 main =
   Html.beginnerProgram { model = model, view = view, update = update }
 
-
 type alias Point = {
-  y : Int, x : Int, cellStatus : Bool
+  y : Int, x : Int, cellStatus : Int
 }
 
 type alias Model = {
@@ -19,86 +18,105 @@ type alias Model = {
 
 model : Model
 model =
-  Model (Array.initialize 64 (\index -> { y = (index // 8), x = (rem index 8), cellStatus = False}))
+  Model (Array.initialize 100 (\index -> { y = (index // 10), x = (index % 10), cellStatus = ((index // 3) % 2)}))
 
 
 -- UPDATE
-type Msg = NoOp
+type Msg = NoOp | Step | ToggleCell Point
 
 update : Msg -> Model -> Model
 update msg model =
   case msg of
     NoOp -> model
- {--   ToggleCell rowIndex cellIndex cellStatus ->
-      {model | points = (Array.set rowIndex (Array.set cellIndex (not cellStatus) (Array.get rowIndex model.points)) model.points)}
+    ToggleCell point ->
+      let
+        x = point.x
+        y = point.y
+        newPoint = {point | cellStatus = (abs (point.cellStatus - 1))}
+      in
+        log "model in toggle" {model | points = (Array.set (x + y) newPoint model.points)}
     Step ->
-      Array.indexedMap updateRow model.points
+      {model | points = (Array.map updateCell model.points)}
 
-updateRow : Int -> Array Bool -> Array Bool
-updateRow rowIndex row =
+updateCell : Point -> Point
+updateCell point =
+  let
+    logSquare = log "square" (point.x + (point.y * 10))
+    numNeighbors = log "numNeighbors" (countNeighbors point)
+    alive = log "alive?" (point.cellStatus == 1)
+  in
+    if alive then
+      if numNeighbors < 2 || numNeighbors > 3 then
+        {point | cellStatus = 0}
+      else
+        point
+    else
+      if numNeighbors == 3 then
+        {point | cellStatus = 1}
+      else
+        point
 
+countNeighbors : Point -> Int
+countNeighbors point =
+  let
+    ul = log "ul" (getNeighbor (point.x - 1) (point.y - 1))
+    u = log "u" (getNeighbor (point.x) (point.y - 1))
+    ur = log "ur" (getNeighbor (point.x + 1) (point.y - 1))
+    l = log "l" (getNeighbor (point.x - 1) (point.y))
+    r = log "r" (getNeighbor (point.x + 1) (point.y))
+    dl = log "dl" (getNeighbor (point.x - 1) (point.y + 1))
+    d = log "d" (getNeighbor (point.x) (point.y + 1))
+    dr = log "dr" (getNeighbor (point.x + 1) (point.y + 1))
+  in
+    ul + u + ur + l + r + dl + d + dr
 
-updateCell : Int -> Bool -> Bool
-updateCell cellIndex cellStatus =
+getNeighbor : Int-> Int -> Int
+getNeighbor x y =
+  let
+    neighborLocation = log "neighborLocation" ((handleEdges x) + ((handleEdges y) * 10))
+  in
+    .cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 100} (Array.get (neighborLocation) model.points))
 
-  --}
-
-
-
-
+handleEdges : Int -> Int
+handleEdges coord =
+  if coord < 0 then
+    coord + 10
+  else if coord > 9 then
+    coord - 10
+  else
+    coord
 
 -- VIEW
 view : Model -> Html Msg
 view model =
-  div [style styles.div]
-    [table [style styles.board]
-      (Array.toList (Array.indexedMap (renderRow) (Array.filter isFirstInRow model.points))),
-    button [class "btn btn-success", style styles.controlPanel] [span [] [text "Step"]]
-    ]
-
-{--
-
-renderRow : Int -> Bool -> Html Msg
-renderRow rowIndex row =
-  tr [] (Array.toList (Array.indexedMap renderCell row))
-
-renderCell : Int -> Point -> Html Msg
-renderCell cellIndex cell =
   let
     firstsInEachRow = Array.filter isFirstInRow model.points
   in
-    Array.indexedMap renderRow firstsInEachRow
-
-
-
-
-  td [style chooseColor cellStatus] [text " "]
- next step is to add button
- next after that: button onClick toggle
-
- button [onClick ToggleCell rowIndex cellIndex cellStatus] [text " "]
-
- --}
+    {--}div [style styles.div]
+      [table [style styles.board]
+        (Array.toList (Array.map (\firstPoint -> tr [] (Array.toList (Array.map (\point ->
+          if point.cellStatus == 1 then
+            td [style styles.tdAlive] [button [onClick (ToggleCell point)] [text " "]]
+          else
+            td [style styles.tdDead] [button [onClick (ToggleCell point)] [text " "]]) ((Array.filter (\point -> point.y == firstPoint.y) model.points))))) firstsInEachRow)),
+      button [class "btn btn-success", style styles.controlPanel, onClick Step] [span [] [text "Step"]]
+      ]
+      --}
+ {--   div [style styles.div]
+    [button [class "btn btn-success", style styles.controlPanel, onClick Step] [span [] [text "Step"]]]
+    --}
 
 isFirstInRow : Point -> Bool
 isFirstInRow point =
   point.x == 0
 
 
-renderRow : Int -> Point -> Html Msg
-renderRow rowIndex firstsInEachRow =
-  let
-    rowArray = (Array.filter (\point -> point.y == rowIndex) model.points)
-  in
-    tr [] (Array.toList (Array.map chooseColor rowArray))
-
-
 chooseColor : Point -> Html Msg
 chooseColor point =
-  if point.cellStatus == True then
-    td [style styles.tdAlive] [text " "]
+  if point.cellStatus == 1 then
+    td [style styles.tdAlive] [button [onClick (ToggleCell point)] [text " "]]
   else
-    td [style styles.tdDead] [text " "]
+    td [style styles.tdDead] [button [onClick (ToggleCell point)] [text " "]]
 
 
 
