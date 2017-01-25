@@ -6,7 +6,7 @@ import Debug exposing (log)
 
 main : Program Never Model Msg
 main =
-  Html.beginnerProgram { model = model, view = view, update = update }
+  Html.beginnerProgram {model = model, view = view, update = update}
 
 type alias Point = {
   y : Int, x : Int, cellStatus : Int
@@ -25,86 +25,75 @@ model =
 type Msg = NoOp | Step | ToggleCell Point
 
 update : Msg -> Model -> Model
-update msg model =
+update msg oldModel =
   case msg of
-    NoOp -> model
+    NoOp -> oldModel
     ToggleCell point ->
       let
         x = point.x
         y = point.y
         newPoint = {point | cellStatus = (abs (point.cellStatus - 1))}
       in
-        log "model in toggle" {model | points = (Array.set (x + y) newPoint model.points)}
+        log "oldModel in toggle" {oldModel | points = (Array.set (x + y) newPoint oldModel.points)}
     Step ->
-      {model | points = (Array.map updateCell model.points)}
+      {oldModel | points = (step oldModel.points)}
 
-updateCell : Point -> Point
-updateCell point =
-  let
-    logSquare = log "square" (point.x + (point.y * 10))
-    numNeighbors = log "numNeighbors" (countNeighbors point)
-    alive = log "alive?" (point.cellStatus == 1)
+step : Array Point -> Array Point
+step points =
+  let numNeighbors = Array.map (\point ->
+    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x - 1) + (10 * (handleEdges (point.y - 1)))) points))) +
+    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x) + (10 * (handleEdges (point.y - 1)))) points))) +
+    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x + 1) + (10 * (handleEdges (point.y - 1)))) points))) +
+    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x - 1) + (10 * (handleEdges (point.y)))) points))) +
+    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x + 1) + (10 * (handleEdges (point.y)))) points))) +
+    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x - 1) + (10 * (handleEdges (point.y + 1)))) points))) +
+    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x) + (10 * (handleEdges (point.y + 1)))) points))) +
+    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x + 1) + (10 * (handleEdges (point.y + 1)))) points)))) points
   in
-    if alive then
-      if numNeighbors < 2 || numNeighbors > 3 then
-        {point | cellStatus = 0}
-      else
-        point
-    else
-      if numNeighbors == 3 then
-        {point | cellStatus = 1}
-      else
-        point
+    Array.indexedMap (\index point ->
+      let
+        thisOnesNeighbors = (Maybe.withDefault 0 (Array.get index numNeighbors))
+      in
+        if isAlive point then
+          if thisOnesNeighbors < 2 || thisOnesNeighbors > 3 then
+            {point | cellStatus = 0}
+          else
+            point
+        else
+          if thisOnesNeighbors == 3 then
+            {point | cellStatus = 1}
+          else
+            point
+    ) points
 
-countNeighbors : Point -> Int
-countNeighbors point =
-  let
-    ul = log "ul" (getNeighbor (point.x - 1) (point.y - 1))
-    u = log "u" (getNeighbor (point.x) (point.y - 1))
-    ur = log "ur" (getNeighbor (point.x + 1) (point.y - 1))
-    l = log "l" (getNeighbor (point.x - 1) (point.y))
-    r = log "r" (getNeighbor (point.x + 1) (point.y))
-    dl = log "dl" (getNeighbor (point.x - 1) (point.y + 1))
-    d = log "d" (getNeighbor (point.x) (point.y + 1))
-    dr = log "dr" (getNeighbor (point.x + 1) (point.y + 1))
-  in
-    ul + u + ur + l + r + dl + d + dr
-
-getNeighbor : Int-> Int -> Int
-getNeighbor x y =
-  let
-    neighborLocation = log "neighborLocation" ((handleEdges x) + ((handleEdges y) * 10))
-  in
-    .cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 100} (Array.get (neighborLocation) model.points))
+isAlive : Point -> Bool
+isAlive point =
+  point.cellStatus == 1
 
 handleEdges : Int -> Int
 handleEdges coord =
   if coord < 0 then
-    coord + 10
+    (coord + 10)
   else if coord > 9 then
-    coord - 10
+    (coord - 10)
   else
     coord
 
 -- VIEW
 view : Model -> Html Msg
-view model =
+view oldModel =
   let
-    firstsInEachRow = Array.filter isFirstInRow model.points
+    firstsInEachRow = Array.filter isFirstInRow oldModel.points
   in
-    {--}div [style styles.div]
+    div [style styles.div]
       [table [style styles.board]
         (Array.toList (Array.map (\firstPoint -> tr [] (Array.toList (Array.map (\point ->
           if point.cellStatus == 1 then
             td [style styles.tdAlive] [button [onClick (ToggleCell point)] [text " "]]
           else
-            td [style styles.tdDead] [button [onClick (ToggleCell point)] [text " "]]) ((Array.filter (\point -> point.y == firstPoint.y) model.points))))) firstsInEachRow)),
+            td [style styles.tdDead] [button [onClick (ToggleCell point)] [text " "]]) ((Array.filter (\point -> point.y == firstPoint.y) oldModel.points))))) firstsInEachRow)),
       button [class "btn btn-success", style styles.controlPanel, onClick Step] [span [] [text "Step"]]
       ]
-      --}
- {--   div [style styles.div]
-    [button [class "btn btn-success", style styles.controlPanel, onClick Step] [span [] [text "Step"]]]
-    --}
 
 isFirstInRow : Point -> Bool
 isFirstInRow point =
