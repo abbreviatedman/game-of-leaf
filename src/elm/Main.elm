@@ -34,7 +34,7 @@ update msg oldModel =
         y = point.y
         newPoint = {point | cellStatus = (abs (point.cellStatus - 1))}
       in
-        log "oldModel in toggle" {oldModel | points = (Array.set (x + y) newPoint oldModel.points)}
+        log "oldModel in toggle" {oldModel | points = (Array.set (x + (10 * y)) newPoint oldModel.points)}
     Step ->
       {oldModel | points = (step oldModel.points)}
 
@@ -91,9 +91,11 @@ view oldModel =
           if point.cellStatus == 1 then
             td [style styles.tdAlive] [button [onClick (ToggleCell point)] [text " "]]
           else
-            td [style styles.tdDead] [button [onClick (ToggleCell point)] [text " "]]) ((Array.filter (\point -> point.y == firstPoint.y) oldModel.points))))) firstsInEachRow)),
+            td [style styles.tdDead] [button [onClick (ToggleCell point)] [text " "]]) (Array.filter (\point -> point.y == firstPoint.y) oldModel.points)))) firstsInEachRow)),
       button [class "btn btn-success", style styles.controlPanel, onClick Step] [span [] [text "Step"]]
       ]
+
+
 
 isFirstInRow : Point -> Bool
 isFirstInRow point =
