@@ -1,0 +1,1 @@
+web: webpack-dev-server --hot --inline --content-base src/

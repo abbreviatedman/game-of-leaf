@@ -16,9 +16,13 @@ type alias Model = {
   points: Array Point
 }
 
+boardRowsAndColumns : Int
+boardRowsAndColumns = 10
+
+
 model : Model
 model =
-  Model (Array.initialize 100 (\index -> { y = (index // 10), x = (index % 10), cellStatus = ((index // 3) % 2)}))
+  Model (Array.initialize (boardRowsAndColumns * boardRowsAndColumns) (\index -> { y = (index // boardRowsAndColumns), x = (index % boardRowsAndColumns), cellStatus = 0}))
 
 
 -- UPDATE
@@ -34,21 +38,21 @@ update msg oldModel =
         y = point.y
         newPoint = {point | cellStatus = (abs (point.cellStatus - 1))}
       in
-        log "oldModel in toggle" {oldModel | points = (Array.set (x + (10 * y)) newPoint oldModel.points)}
+        {oldModel | points = (Array.set (x + (boardRowsAndColumns * y)) newPoint oldModel.points)}
     Step ->
       {oldModel | points = (step oldModel.points)}
 
 step : Array Point -> Array Point
 step points =
   let numNeighbors = Array.map (\point ->
-    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x - 1) + (10 * (handleEdges (point.y - 1)))) points))) +
-    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x) + (10 * (handleEdges (point.y - 1)))) points))) +
-    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x + 1) + (10 * (handleEdges (point.y - 1)))) points))) +
-    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x - 1) + (10 * (handleEdges (point.y)))) points))) +
-    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x + 1) + (10 * (handleEdges (point.y)))) points))) +
-    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x - 1) + (10 * (handleEdges (point.y + 1)))) points))) +
-    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x) + (10 * (handleEdges (point.y + 1)))) points))) +
-    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x + 1) + (10 * (handleEdges (point.y + 1)))) points)))) points
+    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x - 1) + (boardRowsAndColumns * (handleEdges (point.y - 1)))) points))) +
+    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x) + (boardRowsAndColumns * (handleEdges (point.y - 1)))) points))) +
+    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x + 1) + (boardRowsAndColumns * (handleEdges (point.y - 1)))) points))) +
+    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x - 1) + (boardRowsAndColumns * (handleEdges (point.y)))) points))) +
+    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x + 1) + (boardRowsAndColumns * (handleEdges (point.y)))) points))) +
+    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x - 1) + (boardRowsAndColumns * (handleEdges (point.y + 1)))) points))) +
+    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x) + (boardRowsAndColumns * (handleEdges (point.y + 1)))) points))) +
+    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x + 1) + (boardRowsAndColumns * (handleEdges (point.y + 1)))) points)))) points
   in
     Array.indexedMap (\index point ->
       let
@@ -73,9 +77,9 @@ isAlive point =
 handleEdges : Int -> Int
 handleEdges coord =
   if coord < 0 then
-    (coord + 10)
-  else if coord > 9 then
-    (coord - 10)
+    (coord + boardRowsAndColumns)
+  else if coord >= boardRowsAndColumns then
+    (coord - boardRowsAndColumns)
   else
     coord
 
