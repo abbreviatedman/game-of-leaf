@@ -1,0 +1,392 @@
+var _user$project$Main$styles = {
+	div: {
+		ctor: '::',
+		_0: {ctor: '_Tuple2', _0: 'padding', _1: '10px'},
+		_1: {
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: 'text-align', _1: 'center'},
+			_1: {
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: 'margin', _1: 'auto'},
+				_1: {ctor: '[]'}
+			}
+		}
+	},
+	board: {
+		ctor: '::',
+		_0: {ctor: '_Tuple2', _0: 'margin', _1: '0 auto'},
+		_1: {ctor: '[]'}
+	},
+	tdAlive: {
+		ctor: '::',
+		_0: {ctor: '_Tuple2', _0: 'border', _1: '1px solid #ddd'},
+		_1: {
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: 'width', _1: '18px'},
+			_1: {
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: 'height', _1: '18px'},
+				_1: {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'background-color', _1: '#8CC8DD'},
+					_1: {ctor: '[]'}
+				}
+			}
+		}
+	},
+	tdDead: {
+		ctor: '::',
+		_0: {ctor: '_Tuple2', _0: 'border', _1: '1px solid #ddd'},
+		_1: {
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: 'width', _1: '18px'},
+			_1: {
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: 'height', _1: '18px'},
+				_1: {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'background-color', _1: '#fff'},
+					_1: {ctor: '[]'}
+				}
+			}
+		}
+	},
+	controlPanel: {
+		ctor: '::',
+		_0: {ctor: '_Tuple2', _0: 'margin', _1: '10px auto'},
+		_1: {
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: 'text-align', _1: 'center'},
+			_1: {
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: 'align', _1: 'center'},
+				_1: {ctor: '[]'}
+			}
+		}
+	}
+};
+var _user$project$Main$isFirstInRow = function (point) {
+	return _elm_lang$core$Native_Utils.eq(point.x, 0);
+};
+var _user$project$Main$isAlive = function (point) {
+	return _elm_lang$core$Native_Utils.eq(point.cellStatus, 1);
+};
+var _user$project$Main$boardRowsAndColumns = 20;
+var _user$project$Main$handleEdges = function (coord) {
+	return (_elm_lang$core$Native_Utils.cmp(coord, 0) < 0) ? (coord + _user$project$Main$boardRowsAndColumns) : ((_elm_lang$core$Native_Utils.cmp(coord, _user$project$Main$boardRowsAndColumns) > -1) ? (coord - _user$project$Main$boardRowsAndColumns) : coord);
+};
+var _user$project$Main$step = function (points) {
+	var numNeighbors = A2(
+		_elm_lang$core$Array$map,
+		function (point) {
+			return ((((((function (_) {
+				return _.cellStatus;
+			}(
+				A2(
+					_elm_lang$core$Maybe$withDefault,
+					{x: 0, y: 0, cellStatus: 0},
+					A2(
+						_elm_lang$core$Array$get,
+						_user$project$Main$handleEdges(point.x - 1) + (_user$project$Main$boardRowsAndColumns * _user$project$Main$handleEdges(point.y - 1)),
+						points))) + function (_) {
+				return _.cellStatus;
+			}(
+				A2(
+					_elm_lang$core$Maybe$withDefault,
+					{x: 0, y: 0, cellStatus: 0},
+					A2(
+						_elm_lang$core$Array$get,
+						_user$project$Main$handleEdges(point.x) + (_user$project$Main$boardRowsAndColumns * _user$project$Main$handleEdges(point.y - 1)),
+						points)))) + function (_) {
+				return _.cellStatus;
+			}(
+				A2(
+					_elm_lang$core$Maybe$withDefault,
+					{x: 0, y: 0, cellStatus: 0},
+					A2(
+						_elm_lang$core$Array$get,
+						_user$project$Main$handleEdges(point.x + 1) + (_user$project$Main$boardRowsAndColumns * _user$project$Main$handleEdges(point.y - 1)),
+						points)))) + function (_) {
+				return _.cellStatus;
+			}(
+				A2(
+					_elm_lang$core$Maybe$withDefault,
+					{x: 0, y: 0, cellStatus: 0},
+					A2(
+						_elm_lang$core$Array$get,
+						_user$project$Main$handleEdges(point.x - 1) + (_user$project$Main$boardRowsAndColumns * _user$project$Main$handleEdges(point.y)),
+						points)))) + function (_) {
+				return _.cellStatus;
+			}(
+				A2(
+					_elm_lang$core$Maybe$withDefault,
+					{x: 0, y: 0, cellStatus: 0},
+					A2(
+						_elm_lang$core$Array$get,
+						_user$project$Main$handleEdges(point.x + 1) + (_user$project$Main$boardRowsAndColumns * _user$project$Main$handleEdges(point.y)),
+						points)))) + function (_) {
+				return _.cellStatus;
+			}(
+				A2(
+					_elm_lang$core$Maybe$withDefault,
+					{x: 0, y: 0, cellStatus: 0},
+					A2(
+						_elm_lang$core$Array$get,
+						_user$project$Main$handleEdges(point.x - 1) + (_user$project$Main$boardRowsAndColumns * _user$project$Main$handleEdges(point.y + 1)),
+						points)))) + function (_) {
+				return _.cellStatus;
+			}(
+				A2(
+					_elm_lang$core$Maybe$withDefault,
+					{x: 0, y: 0, cellStatus: 0},
+					A2(
+						_elm_lang$core$Array$get,
+						_user$project$Main$handleEdges(point.x) + (_user$project$Main$boardRowsAndColumns * _user$project$Main$handleEdges(point.y + 1)),
+						points)))) + function (_) {
+				return _.cellStatus;
+			}(
+				A2(
+					_elm_lang$core$Maybe$withDefault,
+					{x: 0, y: 0, cellStatus: 0},
+					A2(
+						_elm_lang$core$Array$get,
+						_user$project$Main$handleEdges(point.x + 1) + (_user$project$Main$boardRowsAndColumns * _user$project$Main$handleEdges(point.y + 1)),
+						points)));
+		},
+		points);
+	return A2(
+		_elm_lang$core$Array$indexedMap,
+		F2(
+			function (index, point) {
+				var thisOnesNeighbors = A2(
+					_elm_lang$core$Maybe$withDefault,
+					0,
+					A2(_elm_lang$core$Array$get, index, numNeighbors));
+				return _user$project$Main$isAlive(point) ? (((_elm_lang$core$Native_Utils.cmp(thisOnesNeighbors, 2) < 0) || (_elm_lang$core$Native_Utils.cmp(thisOnesNeighbors, 3) > 0)) ? _elm_lang$core$Native_Utils.update(
+					point,
+					{cellStatus: 0}) : point) : (_elm_lang$core$Native_Utils.eq(thisOnesNeighbors, 3) ? _elm_lang$core$Native_Utils.update(
+					point,
+					{cellStatus: 1}) : point);
+			}),
+		points);
+};
+var _user$project$Main$update = F2(
+	function (msg, oldModel) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'NoOp':
+				return oldModel;
+			case 'ToggleCell':
+				var _p1 = _p0._0;
+				var newPoint = _elm_lang$core$Native_Utils.update(
+					_p1,
+					{
+						cellStatus: _elm_lang$core$Basics$abs(_p1.cellStatus - 1)
+					});
+				var y = _p1.y;
+				var x = _p1.x;
+				return _elm_lang$core$Native_Utils.update(
+					oldModel,
+					{
+						points: A3(_elm_lang$core$Array$set, x + (_user$project$Main$boardRowsAndColumns * y), newPoint, oldModel.points)
+					});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					oldModel,
+					{
+						points: _user$project$Main$step(oldModel.points)
+					});
+		}
+	});
+var _user$project$Main$Point = F3(
+	function (a, b, c) {
+		return {y: a, x: b, cellStatus: c};
+	});
+var _user$project$Main$Model = function (a) {
+	return {points: a};
+};
+var _user$project$Main$model = _user$project$Main$Model(
+	A2(
+		_elm_lang$core$Array$initialize,
+		_user$project$Main$boardRowsAndColumns * _user$project$Main$boardRowsAndColumns,
+		function (index) {
+			return {
+				y: (index / _user$project$Main$boardRowsAndColumns) | 0,
+				x: A2(_elm_lang$core$Basics_ops['%'], index, _user$project$Main$boardRowsAndColumns),
+				cellStatus: 0
+			};
+		}));
+var _user$project$Main$ToggleCell = function (a) {
+	return {ctor: 'ToggleCell', _0: a};
+};
+var _user$project$Main$chooseColor = function (point) {
+	return _elm_lang$core$Native_Utils.eq(point.cellStatus, 1) ? A2(
+		_elm_lang$html$Html$td,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$style(_user$project$Main$styles.tdAlive),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$button,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Events$onClick(
+						_user$project$Main$ToggleCell(point)),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(' '),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		}) : A2(
+		_elm_lang$html$Html$td,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$style(_user$project$Main$styles.tdDead),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$button,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Events$onClick(
+						_user$project$Main$ToggleCell(point)),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(' '),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Main$Step = {ctor: 'Step'};
+var _user$project$Main$view = function (oldModel) {
+	var firstsInEachRow = A2(_elm_lang$core$Array$filter, _user$project$Main$isFirstInRow, oldModel.points);
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$style(_user$project$Main$styles.div),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$table,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$style(_user$project$Main$styles.board),
+					_1: {ctor: '[]'}
+				},
+				_elm_lang$core$Array$toList(
+					A2(
+						_elm_lang$core$Array$map,
+						function (firstPoint) {
+							return A2(
+								_elm_lang$html$Html$tr,
+								{ctor: '[]'},
+								_elm_lang$core$Array$toList(
+									A2(
+										_elm_lang$core$Array$map,
+										function (point) {
+											return _elm_lang$core$Native_Utils.eq(point.cellStatus, 1) ? A2(
+												_elm_lang$html$Html$td,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$style(_user$project$Main$styles.tdAlive),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$button,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Events$onClick(
+																_user$project$Main$ToggleCell(point)),
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text(' '),
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												}) : A2(
+												_elm_lang$html$Html$td,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$style(_user$project$Main$styles.tdDead),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$button,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Events$onClick(
+																_user$project$Main$ToggleCell(point)),
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text(' '),
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												});
+										},
+										A2(
+											_elm_lang$core$Array$filter,
+											function (point) {
+												return _elm_lang$core$Native_Utils.eq(point.y, firstPoint.y);
+											},
+											oldModel.points))));
+						},
+						firstsInEachRow))),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$button,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('btn btn-success'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$style(_user$project$Main$styles.controlPanel),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$Step),
+								_1: {ctor: '[]'}
+							}
+						}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$span,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Step'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _user$project$Main$main = _elm_lang$html$Html$beginnerProgram(
+	{model: _user$project$Main$model, view: _user$project$Main$view, update: _user$project$Main$update})();
+var _user$project$Main$NoOp = {ctor: 'NoOp'};
