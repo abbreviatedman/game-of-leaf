@@ -1,6 +1,6 @@
 # Game of Leaf
 
-Game of Leaf is an implementation of Conway's Game of Life, executed in the Elm programming language.
+Game of Leaf is a version of Conway's Game of Life, implemented in the Elm programming language. I learned an awful lot about functional programming, and I'm looking forward to tinkering with this some more!
 
 Deployed at [gameofleaf.herokuapp.com](http://gameofleaf.herokuapp.com).
 
