@@ -17,7 +17,7 @@ type alias Model = {
 }
 
 boardRowsAndColumns : Int
-boardRowsAndColumns = 10
+boardRowsAndColumns = 20
 
 
 model : Model
@@ -121,6 +121,8 @@ styles =
   {
     div =
       [ ("padding", "10px")
+      , ("text-align", "center")
+      , ("margin", "auto")
       ],
     board =
       [ ( "margin",  "0 auto")
@@ -140,5 +142,6 @@ styles =
     controlPanel =
       [ ("margin", "10px auto")
       , ("text-align", "center")
+      , ("align", "center")
       ]
   }
