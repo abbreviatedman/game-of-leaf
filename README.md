@@ -2,13 +2,15 @@
 
 Game of Leaf is an implementation of Conway's Game of Life, executed in the Elm programming language.
 
-To launch, navigate to the root directory and type:
+Deployed at [gameofleaf.herokuapp.com](http://gameofleaf.herokuapp.com).
+
+To build locally, navigate to the root directory and type:
 
 ```bash
 elm-reactor
 ```
 
-Then, in your browser, navigate to [http://localhost:8000/index.html](http://localhost:8000/index.html)
+Then, in your browser, navigate to [http://localhost:8000/index.html](http://localhost:8000/index.html).
 
 TODO:
 * The ability to set the size of the board. I have that in a variable, so should be able to extend that.
