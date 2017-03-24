@@ -91,14 +91,17 @@ view oldModel =
     firstsInEachRow = Array.filter isFirstInRow oldModel.points
   in
     div []
-      [p [] [text "Game of Leaf"]
-      ,table [class "board"]
+      [ p [] [h1 [] [text "Game of Leaf"]]
+      , p [] [h3 [] [text "by Colin Jaffe"]]
+      , p [] [text "Conway's Game of Life implemented in Elm."]
+      , hr [] []
+      , table [class "board"]
         (Array.toList (Array.map (\firstPoint -> tr [] (Array.toList (Array.map (\point ->
           if point.cellStatus == 1 then
             td [class "tdAlive"] [button [onClick (ToggleCell point)] [text " "]]
           else
-            td [class "tdDead"] [button [onClick (ToggleCell point)] [text " "]]) (Array.filter (\point -> point.y == firstPoint.y) oldModel.points)))) firstsInEachRow)),
-      button [class "btn btn-success", onClick Step] [span [] [text "Step"]]
+            td [class "tdDead"] [button [onClick (ToggleCell point)] [text " "]]) (Array.filter (\point -> point.y == firstPoint.y) oldModel.points)))) firstsInEachRow))
+      , button [class "myButton", onClick Step] [span [] [text "Step"]]
       ]
 
 

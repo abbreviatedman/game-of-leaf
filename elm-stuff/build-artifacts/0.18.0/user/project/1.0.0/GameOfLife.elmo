@@ -214,111 +214,154 @@ var _user$project$GameOfLife$view = function (oldModel) {
 				{ctor: '[]'},
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text('Game of Leaf'),
+					_0: A2(
+						_elm_lang$html$Html$h1,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('Game of Leaf'),
+							_1: {ctor: '[]'}
+						}),
 					_1: {ctor: '[]'}
 				}),
 			_1: {
 				ctor: '::',
 				_0: A2(
-					_elm_lang$html$Html$table,
+					_elm_lang$html$Html$p,
+					{ctor: '[]'},
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('board'),
+						_0: A2(
+							_elm_lang$html$Html$h3,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('by Colin Jaffe'),
+								_1: {ctor: '[]'}
+							}),
 						_1: {ctor: '[]'}
-					},
-					_elm_lang$core$Array$toList(
-						A2(
-							_elm_lang$core$Array$map,
-							function (firstPoint) {
-								return A2(
-									_elm_lang$html$Html$tr,
-									{ctor: '[]'},
-									_elm_lang$core$Array$toList(
-										A2(
-											_elm_lang$core$Array$map,
-											function (point) {
-												return _elm_lang$core$Native_Utils.eq(point.cellStatus, 1) ? A2(
-													_elm_lang$html$Html$td,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('tdAlive'),
-														_1: {ctor: '[]'}
-													},
-													{
-														ctor: '::',
-														_0: A2(
-															_elm_lang$html$Html$button,
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html_Events$onClick(
-																	_user$project$GameOfLife$ToggleCell(point)),
-																_1: {ctor: '[]'}
-															},
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html$text(' '),
-																_1: {ctor: '[]'}
-															}),
-														_1: {ctor: '[]'}
-													}) : A2(
-													_elm_lang$html$Html$td,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('tdDead'),
-														_1: {ctor: '[]'}
-													},
-													{
-														ctor: '::',
-														_0: A2(
-															_elm_lang$html$Html$button,
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html_Events$onClick(
-																	_user$project$GameOfLife$ToggleCell(point)),
-																_1: {ctor: '[]'}
-															},
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html$text(' '),
-																_1: {ctor: '[]'}
-															}),
-														_1: {ctor: '[]'}
-													});
-											},
-											A2(
-												_elm_lang$core$Array$filter,
-												function (point) {
-													return _elm_lang$core$Native_Utils.eq(point.y, firstPoint.y);
-												},
-												oldModel.points))));
-							},
-							firstsInEachRow))),
+					}),
 				_1: {
 					ctor: '::',
 					_0: A2(
-						_elm_lang$html$Html$button,
+						_elm_lang$html$Html$p,
+						{ctor: '[]'},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('btn btn-success'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Events$onClick(_user$project$GameOfLife$Step),
-								_1: {ctor: '[]'}
-							}
-						},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$span,
-								{ctor: '[]'},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text('Step'),
-									_1: {ctor: '[]'}
-								}),
+							_0: _elm_lang$html$Html$text('Conway\'s Game of Life implemented in Elm.'),
 							_1: {ctor: '[]'}
 						}),
-					_1: {ctor: '[]'}
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$hr,
+							{ctor: '[]'},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$table,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('board'),
+									_1: {ctor: '[]'}
+								},
+								_elm_lang$core$Array$toList(
+									A2(
+										_elm_lang$core$Array$map,
+										function (firstPoint) {
+											return A2(
+												_elm_lang$html$Html$tr,
+												{ctor: '[]'},
+												_elm_lang$core$Array$toList(
+													A2(
+														_elm_lang$core$Array$map,
+														function (point) {
+															return _elm_lang$core$Native_Utils.eq(point.cellStatus, 1) ? A2(
+																_elm_lang$html$Html$td,
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$class('tdAlive'),
+																	_1: {ctor: '[]'}
+																},
+																{
+																	ctor: '::',
+																	_0: A2(
+																		_elm_lang$html$Html$button,
+																		{
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Events$onClick(
+																				_user$project$GameOfLife$ToggleCell(point)),
+																			_1: {ctor: '[]'}
+																		},
+																		{
+																			ctor: '::',
+																			_0: _elm_lang$html$Html$text(' '),
+																			_1: {ctor: '[]'}
+																		}),
+																	_1: {ctor: '[]'}
+																}) : A2(
+																_elm_lang$html$Html$td,
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$class('tdDead'),
+																	_1: {ctor: '[]'}
+																},
+																{
+																	ctor: '::',
+																	_0: A2(
+																		_elm_lang$html$Html$button,
+																		{
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Events$onClick(
+																				_user$project$GameOfLife$ToggleCell(point)),
+																			_1: {ctor: '[]'}
+																		},
+																		{
+																			ctor: '::',
+																			_0: _elm_lang$html$Html$text(' '),
+																			_1: {ctor: '[]'}
+																		}),
+																	_1: {ctor: '[]'}
+																});
+														},
+														A2(
+															_elm_lang$core$Array$filter,
+															function (point) {
+																return _elm_lang$core$Native_Utils.eq(point.y, firstPoint.y);
+															},
+															oldModel.points))));
+										},
+										firstsInEachRow))),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$button,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('myButton'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Events$onClick(_user$project$GameOfLife$Step),
+											_1: {ctor: '[]'}
+										}
+									},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$span,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('Step'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
 				}
 			}
 		});
