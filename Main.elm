@@ -1,3 +1,5 @@
+module GameOfLife exposing (..)
+
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing ( onClick )
@@ -5,8 +7,7 @@ import Array exposing (..)
 import Debug exposing (log)
 
 main : Program Never Model Msg
-main =
-  Html.beginnerProgram {model = model, view = view, update = update}
+main = Html.beginnerProgram {model = model, view = view, update = update}
 
 type alias Point = {
   y : Int, x : Int, cellStatus : Int
@@ -89,14 +90,15 @@ view oldModel =
   let
     firstsInEachRow = Array.filter isFirstInRow oldModel.points
   in
-    div [style styles.div]
-      [table [style styles.board]
+    div []
+      [p [] [text "Game of Leaf"]
+      ,table [class "board"]
         (Array.toList (Array.map (\firstPoint -> tr [] (Array.toList (Array.map (\point ->
           if point.cellStatus == 1 then
-            td [style styles.tdAlive] [button [onClick (ToggleCell point)] [text " "]]
+            td [class "tdAlive"] [button [onClick (ToggleCell point)] [text " "]]
           else
-            td [style styles.tdDead] [button [onClick (ToggleCell point)] [text " "]]) (Array.filter (\point -> point.y == firstPoint.y) oldModel.points)))) firstsInEachRow)),
-      button [class "btn btn-success", style styles.controlPanel, onClick Step] [span [] [text "Step"]]
+            td [class "tdDead"] [button [onClick (ToggleCell point)] [text " "]]) (Array.filter (\point -> point.y == firstPoint.y) oldModel.points)))) firstsInEachRow)),
+      button [class "btn btn-success", onClick Step] [span [] [text "Step"]]
       ]
 
 
@@ -109,14 +111,14 @@ isFirstInRow point =
 chooseColor : Point -> Html Msg
 chooseColor point =
   if point.cellStatus == 1 then
-    td [style styles.tdAlive] [button [onClick (ToggleCell point)] [text " "]]
+    td [class "tdAlive"] [button [onClick (ToggleCell point)] [text " "]]
   else
-    td [style styles.tdDead] [button [onClick (ToggleCell point)] [text " "]]
+    td [class "tdDead"] [button [onClick (ToggleCell point)] [text " "]]
 
 
 
--- CSS STYLES
-styles : { div : List (String, String), board : List (String, String), tdAlive : List (String, String), tdDead : List (String, String), controlPanel : List (String, String)}
+{- CSS STYLES
+styles : { div : List (String, String), board : List (String, String), tdAlive : List (String, String), tdDead : List (String, String), controlPanel : List (String, String), button : List (String, String)}
 styles =
   {
     div =
@@ -143,5 +145,14 @@ styles =
       [ ("margin", "10px auto")
       , ("text-align", "center")
       , ("align", "center")
+      ],
+    button =
+      [ ("height", "30px")
+      , ("width", "30px")
+      , ("margin", "10px auto")
+      , ("text-align", "center")
       ]
   }
+-}
+
+
