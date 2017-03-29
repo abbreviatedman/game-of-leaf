@@ -46,14 +46,14 @@ update msg oldModel =
 step : Array Point -> Array Point
 step points =
   let numNeighbors = Array.map (\point ->
-    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x - 1) + (boardRowsAndColumns * (handleEdges (point.y - 1)))) points))) +
-    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x) + (boardRowsAndColumns * (handleEdges (point.y - 1)))) points))) +
-    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x + 1) + (boardRowsAndColumns * (handleEdges (point.y - 1)))) points))) +
-    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x - 1) + (boardRowsAndColumns * (handleEdges (point.y)))) points))) +
-    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x + 1) + (boardRowsAndColumns * (handleEdges (point.y)))) points))) +
-    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x - 1) + (boardRowsAndColumns * (handleEdges (point.y + 1)))) points))) +
-    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x) + (boardRowsAndColumns * (handleEdges (point.y + 1)))) points))) +
-    (.cellStatus (Maybe.withDefault {x = 0, y = 0, cellStatus = 0} (Array.get (handleEdges (point.x + 1) + (boardRowsAndColumns * (handleEdges (point.y + 1)))) points)))) points
+    (.cellStatus (Maybe.withDefault defaultPoint (Array.get (handleEdges (point.x - 1) + (boardRowsAndColumns * (handleEdges (point.y - 1)))) points))) +
+    (.cellStatus (Maybe.withDefault defaultPoint (Array.get (handleEdges (point.x) + (boardRowsAndColumns * (handleEdges (point.y - 1)))) points))) +
+    (.cellStatus (Maybe.withDefault defaultPoint (Array.get (handleEdges (point.x + 1) + (boardRowsAndColumns * (handleEdges (point.y - 1)))) points))) +
+    (.cellStatus (Maybe.withDefault defaultPoint (Array.get (handleEdges (point.x - 1) + (boardRowsAndColumns * (handleEdges (point.y)))) points))) +
+    (.cellStatus (Maybe.withDefault defaultPoint (Array.get (handleEdges (point.x + 1) + (boardRowsAndColumns * (handleEdges (point.y)))) points))) +
+    (.cellStatus (Maybe.withDefault defaultPoint (Array.get (handleEdges (point.x - 1) + (boardRowsAndColumns * (handleEdges (point.y + 1)))) points))) +
+    (.cellStatus (Maybe.withDefault defaultPoint (Array.get (handleEdges (point.x) + (boardRowsAndColumns * (handleEdges (point.y + 1)))) points))) +
+    (.cellStatus (Maybe.withDefault defaultPoint (Array.get (handleEdges (point.x + 1) + (boardRowsAndColumns * (handleEdges (point.y + 1)))) points)))) points
   in
     Array.indexedMap (\index point ->
       let
@@ -70,6 +70,11 @@ step points =
           else
             point
     ) points
+
+defaultPoint : Point
+defaultPoint =
+  {x = 0, y = 0, cellStatus = 0}
+
 
 isAlive : Point -> Bool
 isAlive point =
@@ -98,9 +103,9 @@ view oldModel =
       , table [class "board"]
         (Array.toList (Array.map (\firstPoint -> tr [] (Array.toList (Array.map (\point ->
           if point.cellStatus == 1 then
-            td [class "tdAlive"] [button [onClick (ToggleCell point)] [text " "]]
+            td [class "tdAlive", onClick (ToggleCell point)] [text " "]
           else
-            td [class "tdDead"] [button [onClick (ToggleCell point)] [text " "]]) (Array.filter (\point -> point.y == firstPoint.y) oldModel.points)))) firstsInEachRow))
+            td [class "tdDead", onClick (ToggleCell point)] [text " "]) (Array.filter (\point -> point.y == firstPoint.y) oldModel.points)))) firstsInEachRow))
       , button [class "myButton", onClick Step] [span [] [text "Step"]]
       ]
 

@@ -8266,6 +8266,7 @@ var _user$project$GameOfLife$isFirstInRow = function (point) {
 var _user$project$GameOfLife$isAlive = function (point) {
 	return _elm_lang$core$Native_Utils.eq(point.cellStatus, 1);
 };
+var _user$project$GameOfLife$defaultPoint = {x: 0, y: 0, cellStatus: 0};
 var _user$project$GameOfLife$boardRowsAndColumns = 20;
 var _user$project$GameOfLife$handleEdges = function (coord) {
 	return (_elm_lang$core$Native_Utils.cmp(coord, 0) < 0) ? (coord + _user$project$GameOfLife$boardRowsAndColumns) : ((_elm_lang$core$Native_Utils.cmp(coord, _user$project$GameOfLife$boardRowsAndColumns) > -1) ? (coord - _user$project$GameOfLife$boardRowsAndColumns) : coord);
@@ -8279,7 +8280,7 @@ var _user$project$GameOfLife$step = function (points) {
 			}(
 				A2(
 					_elm_lang$core$Maybe$withDefault,
-					{x: 0, y: 0, cellStatus: 0},
+					_user$project$GameOfLife$defaultPoint,
 					A2(
 						_elm_lang$core$Array$get,
 						_user$project$GameOfLife$handleEdges(point.x - 1) + (_user$project$GameOfLife$boardRowsAndColumns * _user$project$GameOfLife$handleEdges(point.y - 1)),
@@ -8288,7 +8289,7 @@ var _user$project$GameOfLife$step = function (points) {
 			}(
 				A2(
 					_elm_lang$core$Maybe$withDefault,
-					{x: 0, y: 0, cellStatus: 0},
+					_user$project$GameOfLife$defaultPoint,
 					A2(
 						_elm_lang$core$Array$get,
 						_user$project$GameOfLife$handleEdges(point.x) + (_user$project$GameOfLife$boardRowsAndColumns * _user$project$GameOfLife$handleEdges(point.y - 1)),
@@ -8297,7 +8298,7 @@ var _user$project$GameOfLife$step = function (points) {
 			}(
 				A2(
 					_elm_lang$core$Maybe$withDefault,
-					{x: 0, y: 0, cellStatus: 0},
+					_user$project$GameOfLife$defaultPoint,
 					A2(
 						_elm_lang$core$Array$get,
 						_user$project$GameOfLife$handleEdges(point.x + 1) + (_user$project$GameOfLife$boardRowsAndColumns * _user$project$GameOfLife$handleEdges(point.y - 1)),
@@ -8306,7 +8307,7 @@ var _user$project$GameOfLife$step = function (points) {
 			}(
 				A2(
 					_elm_lang$core$Maybe$withDefault,
-					{x: 0, y: 0, cellStatus: 0},
+					_user$project$GameOfLife$defaultPoint,
 					A2(
 						_elm_lang$core$Array$get,
 						_user$project$GameOfLife$handleEdges(point.x - 1) + (_user$project$GameOfLife$boardRowsAndColumns * _user$project$GameOfLife$handleEdges(point.y)),
@@ -8315,7 +8316,7 @@ var _user$project$GameOfLife$step = function (points) {
 			}(
 				A2(
 					_elm_lang$core$Maybe$withDefault,
-					{x: 0, y: 0, cellStatus: 0},
+					_user$project$GameOfLife$defaultPoint,
 					A2(
 						_elm_lang$core$Array$get,
 						_user$project$GameOfLife$handleEdges(point.x + 1) + (_user$project$GameOfLife$boardRowsAndColumns * _user$project$GameOfLife$handleEdges(point.y)),
@@ -8324,7 +8325,7 @@ var _user$project$GameOfLife$step = function (points) {
 			}(
 				A2(
 					_elm_lang$core$Maybe$withDefault,
-					{x: 0, y: 0, cellStatus: 0},
+					_user$project$GameOfLife$defaultPoint,
 					A2(
 						_elm_lang$core$Array$get,
 						_user$project$GameOfLife$handleEdges(point.x - 1) + (_user$project$GameOfLife$boardRowsAndColumns * _user$project$GameOfLife$handleEdges(point.y + 1)),
@@ -8333,7 +8334,7 @@ var _user$project$GameOfLife$step = function (points) {
 			}(
 				A2(
 					_elm_lang$core$Maybe$withDefault,
-					{x: 0, y: 0, cellStatus: 0},
+					_user$project$GameOfLife$defaultPoint,
 					A2(
 						_elm_lang$core$Array$get,
 						_user$project$GameOfLife$handleEdges(point.x) + (_user$project$GameOfLife$boardRowsAndColumns * _user$project$GameOfLife$handleEdges(point.y + 1)),
@@ -8342,7 +8343,7 @@ var _user$project$GameOfLife$step = function (points) {
 			}(
 				A2(
 					_elm_lang$core$Maybe$withDefault,
-					{x: 0, y: 0, cellStatus: 0},
+					_user$project$GameOfLife$defaultPoint,
 					A2(
 						_elm_lang$core$Array$get,
 						_user$project$GameOfLife$handleEdges(point.x + 1) + (_user$project$GameOfLife$boardRowsAndColumns * _user$project$GameOfLife$handleEdges(point.y + 1)),
@@ -8544,46 +8545,32 @@ var _user$project$GameOfLife$view = function (oldModel) {
 																{
 																	ctor: '::',
 																	_0: _elm_lang$html$Html_Attributes$class('tdAlive'),
-																	_1: {ctor: '[]'}
+																	_1: {
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Events$onClick(
+																			_user$project$GameOfLife$ToggleCell(point)),
+																		_1: {ctor: '[]'}
+																	}
 																},
 																{
 																	ctor: '::',
-																	_0: A2(
-																		_elm_lang$html$Html$button,
-																		{
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Events$onClick(
-																				_user$project$GameOfLife$ToggleCell(point)),
-																			_1: {ctor: '[]'}
-																		},
-																		{
-																			ctor: '::',
-																			_0: _elm_lang$html$Html$text(' '),
-																			_1: {ctor: '[]'}
-																		}),
+																	_0: _elm_lang$html$Html$text(' '),
 																	_1: {ctor: '[]'}
 																}) : A2(
 																_elm_lang$html$Html$td,
 																{
 																	ctor: '::',
 																	_0: _elm_lang$html$Html_Attributes$class('tdDead'),
-																	_1: {ctor: '[]'}
+																	_1: {
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Events$onClick(
+																			_user$project$GameOfLife$ToggleCell(point)),
+																		_1: {ctor: '[]'}
+																	}
 																},
 																{
 																	ctor: '::',
-																	_0: A2(
-																		_elm_lang$html$Html$button,
-																		{
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Events$onClick(
-																				_user$project$GameOfLife$ToggleCell(point)),
-																			_1: {ctor: '[]'}
-																		},
-																		{
-																			ctor: '::',
-																			_0: _elm_lang$html$Html$text(' '),
-																			_1: {ctor: '[]'}
-																		}),
+																	_0: _elm_lang$html$Html$text(' '),
 																	_1: {ctor: '[]'}
 																});
 														},
@@ -8615,7 +8602,7 @@ var _user$project$GameOfLife$view = function (oldModel) {
 											{ctor: '[]'},
 											{
 												ctor: '::',
-												_0: _elm_lang$html$Html$text('Step'),
+												_0: _elm_lang$html$Html$text('Stip'),
 												_1: {ctor: '[]'}
 											}),
 										_1: {ctor: '[]'}

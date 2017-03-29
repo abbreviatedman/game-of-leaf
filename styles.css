@@ -4,18 +4,20 @@ div {
   margin: auto;
 }
 .board {
-  margin: auto;
+  margin: 0 auto;
+}
+.board td {
+  border: 1px solid #ddd;
+  width: 18px;
+  height: 18px;
 }
 .tdAlive {
-  border: 1px solid #ddd;
-  width: 18px;
-  height: 18px;
   background-color: #8CC8DD;
 }
+.tdAlive button {
+  color: #8CC8DD;
+}
 .tdDead {
-  border: 1px solid #ddd;
-  width: 18px;
-  height: 18px;
   background-color: #fff;
 }
 .controlPanel {
