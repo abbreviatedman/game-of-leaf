@@ -103,9 +103,9 @@ view oldModel =
       , table [class "board"]
         (Array.toList (Array.map (\firstPoint -> tr [] (Array.toList (Array.map (\point ->
           if point.cellStatus == 1 then
-            td [class "tdAlive", onClick (ToggleCell point)] [text " "]
+            td [class "tdAlive", onClick (ToggleCell point)] [img [src "elm-logo-blue.svg", style [("display", "block")]] []]
           else
-            td [class "tdDead", onClick (ToggleCell point)] [text " "]) (Array.filter (\point -> point.y == firstPoint.y) oldModel.points)))) firstsInEachRow))
+            td [class "tdDead", onClick (ToggleCell point)] []) (Array.filter (\point -> point.y == firstPoint.y) oldModel.points)))) firstsInEachRow))
       , button [class "myButton", onClick Step] [span [] [text "Step"]]
       ]
 

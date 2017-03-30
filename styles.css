@@ -7,9 +7,9 @@ div {
   margin: 0 auto;
 }
 .board td {
-  border: 1px solid #ddd;
   width: 18px;
   height: 18px;
+  border: 1px solid #ddd;
 }
 .tdAlive {
   background-color: #8CC8DD;
@@ -24,6 +24,11 @@ div {
   margin: 10px auto;
   text-align: center;
   align: center;
+}
+td img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .myButton {

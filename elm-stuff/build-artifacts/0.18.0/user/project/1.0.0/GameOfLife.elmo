@@ -292,7 +292,23 @@ var _user$project$GameOfLife$view = function (oldModel) {
 																},
 																{
 																	ctor: '::',
-																	_0: _elm_lang$html$Html$text(' '),
+																	_0: A2(
+																		_elm_lang$html$Html$img,
+																		{
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Attributes$src('elm-logo-blue.svg'),
+																			_1: {
+																				ctor: '::',
+																				_0: _elm_lang$html$Html_Attributes$style(
+																					{
+																						ctor: '::',
+																						_0: {ctor: '_Tuple2', _0: 'display', _1: 'block'},
+																						_1: {ctor: '[]'}
+																					}),
+																				_1: {ctor: '[]'}
+																			}
+																		},
+																		{ctor: '[]'}),
 																	_1: {ctor: '[]'}
 																}) : A2(
 																_elm_lang$html$Html$td,
@@ -306,11 +322,7 @@ var _user$project$GameOfLife$view = function (oldModel) {
 																		_1: {ctor: '[]'}
 																	}
 																},
-																{
-																	ctor: '::',
-																	_0: _elm_lang$html$Html$text(' '),
-																	_1: {ctor: '[]'}
-																});
+																{ctor: '[]'});
 														},
 														A2(
 															_elm_lang$core$Array$filter,
