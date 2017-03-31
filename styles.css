@@ -12,13 +12,15 @@ div {
   border: 1px solid #ddd;
 }
 .tdAlive {
-  background-color: #8CC8DD;
+  background-color: #fff;
 }
+/*
 .tdAlive button {
   color: #8CC8DD;
 }
+*/
 .tdDead {
-  background-color: #fff;
+  background-color: white;
 }
 .controlPanel {
   margin: 10px auto;
@@ -26,9 +28,12 @@ div {
   align: center;
 }
 td img {
+  border: none !important;
+  outline: none !important;
   width: 100%;
   height: auto;
   display: block;
+  background-color: white;
 }
 
 .myButton {

@@ -103,7 +103,7 @@ view oldModel =
       , table [class "board"]
         (Array.toList (Array.map (\firstPoint -> tr [] (Array.toList (Array.map (\point ->
           if point.cellStatus == 1 then
-            td [class "tdAlive", onClick (ToggleCell point)] [img [src "elm-logo-blue.svg", style [("display", "block")]] []]
+            td [class "tdAlive", onClick (ToggleCell point)] [img [src "elm-logo-regular.png"] []]
           else
             td [class "tdDead", onClick (ToggleCell point)] []) (Array.filter (\point -> point.y == firstPoint.y) oldModel.points)))) firstsInEachRow))
       , button [class "myButton", onClick Step] [span [] [text "Step"]]
